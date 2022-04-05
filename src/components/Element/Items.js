@@ -1,34 +1,11 @@
-/* eslint-disable no-useless-concat */
 import React from 'react'
 import '../style.css'
 import { useDrag, useDrop } from 'react-dnd'
 import { v4 as uuidv4 } from 'uuid';
 import { Library } from '../../Library/Library'
+import getIdAfterCrash from './ListItems'
 
-const getIndex = (name) => {
-    for (let index = 0; index < Library.length; index++) {
-        if (Library[index].name === name)
-            return index;
-    }
-    return -1;
-}
-
-function Items({ left, right, iconId, iconItem, url, setBoard, setIcons }) {
-
-    // recipe list
-    const getIdAfterCrash = (dragName, dropName) => {
-        const obj = {}
-        obj['fire' + 'air'] = 'energy'; obj['air' + 'fire'] = 'energy';
-        obj['fire' + 'water'] = 'steam'; obj['water' + 'fire'] = 'steam';
-        obj['fire' + 'earth'] = 'lava'; obj['earth' + 'fire'] = 'lava';
-        obj['water' + 'earth'] = 'mud'; obj['earth' + 'water'] = 'mud';
-        obj['water' + 'lava'] = 'obsidian'; obj['lava' + 'water'] = 'obsidian';
-        obj['water' + 'air'] = 'rain'; obj['air' + 'water'] = 'rain';
-        obj['air' + 'earth'] = 'dust'; obj['air' + 'earth'] = 'dust';
-        const newName = obj[dragName + dropName];
-        if (!newName) return -1;
-        return getIndex(newName);
-    }
+function Items({ left, right, iconId, iconItem, url, setList, setIcons }) {
 
     const [, dragSourceRef] = useDrag(() => ({
         type: 'images',
@@ -41,17 +18,17 @@ function Items({ left, right, iconId, iconItem, url, setBoard, setIcons }) {
             const initial = monitor.getInitialSourceClientOffset()
             const differ = monitor.getDifferenceFromInitialOffset()
             if (initial) {
-                let toado = {
+                let coordinates = {
                     x: initial.x + differ.x,
                     y: initial.y + differ.y
                 }
                 const idAfterCrash = getIdAfterCrash(dragIconItem.name, iconItem.name);
                 // if collision occurs
                 if (idAfterCrash !== -1) {
-                    if (setBoard) {
-                        setBoard(prev => {
+                    if (setList) {
+                        setList(prev => {
                             // add icon after collison to the board
-                            const newBoard = [...prev, { ...Library[idAfterCrash], toado, iconId: uuidv4() }];
+                            const newBoard = [...prev, { ...Library[idAfterCrash], coordinates, iconId: uuidv4() }];
                             // remove `drag icon` and remove `drop icon`
                             const newBoardAfter = newBoard.filter(icon => icon.iconId !== dragIconId && icon.iconId !== iconId);
                             return newBoardAfter;
@@ -62,14 +39,14 @@ function Items({ left, right, iconId, iconItem, url, setBoard, setIcons }) {
                     }
                 } else {
                     // if collison not occur
-                    // will move drag icon to new toado
-                    if (setBoard) {
-                        setBoard(prev => {
+                    // will move drag icon to new coordinates
+                    if (setList) {
+                        setList(prev => {
                             const newBoard = [...prev].map(icon => {
                                 if (icon.iconId === dragIconId) {
                                     const newIcon = { ...icon };
-                                    // change old toado to new toado
-                                    newIcon.toado = toado;
+                                    // change old coordinates to new coordinates
+                                    newIcon.coordinates = coordinates;
                                     return newIcon;
                                 }
                                 return icon;

@@ -1,6 +1,10 @@
 .container {
     background-image: url("../../img/workspace-bg.png");
     width: 80%;
-    height: 100vh;
+    height: 138vh;
     position: relative;
+}
+.icon-img2{
+    cursor: pointer;
+    position: absolute;
 }

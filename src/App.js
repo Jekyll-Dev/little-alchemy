@@ -4,12 +4,12 @@ import Screenwork from './components/Element/Screenwork';
 import Sidebar from './components/Sidebar/Sidebar';
 
 function App() {
-  const [board, setBoard] = useState([]);
+  const [list, setList] = useState([]);
   const [icons, setIcons] = useState(['air', 'earth', 'fire', 'water']);
   return (
     <div className="App" >
-      <Screenwork board={board} setBoard={setBoard} setIcons={setIcons} />
-      <Sidebar icons={icons} setIcons={setIcons} setBoard={setBoard} />
+      <Screenwork list={list} setList={setList} setIcons={setIcons} />
+      <Sidebar icons={icons} setIcons={setIcons} setList={setList} />
     </div>
   );
 }

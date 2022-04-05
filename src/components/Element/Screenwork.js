@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { Library } from '../../Library/Library'
 import Items from './Items'
 
-function Screenwork({ board, setBoard, setIcons }) {
+function Screenwork({ list, setList, setIcons }) {
 
     const [, drop] = useDrop(() => ({
         accept: 'images',
@@ -15,24 +15,24 @@ function Screenwork({ board, setBoard, setIcons }) {
             const initial = monitor.getInitialSourceClientOffset()
             const differ = monitor.getDifferenceFromInitialOffset()
             if (initial) {
-                let toado = {
+                let coordinates = {
                     x: initial.x + differ.x,
                     y: initial.y + differ.y
                 }
-                addImageToBoard(iconItem, toado, iconId, left, right)
+                addImageToBoard(iconItem, coordinates, iconId, left, right)
             }
         }
     }))
 
-    const addImageToBoard = (iconItem, toado, iconId, left, right) => {
-        setBoard(prev => {
+    const addImageToBoard = (iconItem, coordinates, iconId, left, right) => {
+        setList(prev => {
             // if drag from left => will move
             if (left) {
                 const newBoard = [...prev].map(icon => {
                     if (icon.iconId === iconId) {
                         const newIcon = { ...icon };
-                        // change old toado to new toado
-                        newIcon.toado = toado;
+                        // change old coordinates to new coordinates
+                        newIcon.coordinates = coordinates;
                         return newIcon;
                     }
                     return icon;
@@ -42,7 +42,7 @@ function Screenwork({ board, setBoard, setIcons }) {
             // if drag from right => will add
             if (right) {
                 // increase range of this range for more correct
-                const newBoard = [...prev, { ...Library[iconItem.id], toado, iconId: uuidv4() }];
+                const newBoard = [...prev, { ...Library[iconItem.id], coordinates, iconId: uuidv4() }];
                 return newBoard
             }
             return prev;
@@ -53,9 +53,9 @@ function Screenwork({ board, setBoard, setIcons }) {
         <div className='container' ref={drop}>
             <div>
                 {
-                    board.map((icon, index) => {
-                        return <div key={index} className='icon-img' style={{ left: icon.toado.x, top: icon.toado.y }}>
-                            <Items left={true} iconId={icon.iconId} iconItem={icon} url={icon.images} setBoard={setBoard} setIcons={setIcons} />
+                    list.map((icon, index) => {
+                        return <div key={index} className='icon-img2' style={{ left: icon.coordinates.x, top: icon.coordinates.y }}>
+                            <Items left={true} iconId={icon.iconId} iconItem={icon} url={icon.images} setList={setList} setIcons={setIcons} />
                         </div>
                     })
                 }

@@ -4,7 +4,7 @@ import { alphabet } from './Alphabet'
 import { Library } from '../../Library/Library'
 import Items from '../Element/Items'
 
-function Sidebar({ icons, setIcons, setBoard }) {
+function Sidebar({ icons, setIcons, setList }) {
 
   const [renderIcons, setRenderIcons] = useState([]);
 
@@ -26,7 +26,7 @@ function Sidebar({ icons, setIcons, setBoard }) {
         {renderIcons.map((icon, index) => (
           <li key={icon.id}>
             <div className='icon-img'>
-              <Items right={true} iconId={index + 1} url={icon.images} iconItem={icon} setIcons={setIcons} setBoard={setBoard} />
+              <Items right={true} iconId={index + 1} url={icon.images} iconItem={icon} setIcons={setIcons} setList={setList} />
             </div>
             <span className='name'>{icon.name}</span>
           </li>
