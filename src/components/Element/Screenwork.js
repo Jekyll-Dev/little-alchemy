@@ -60,6 +60,9 @@ function Screenwork({ list, setList, setIcons }) {
                     })
                 }
             </div>
+            <div className='footer'>
+                <span> Copyright &copy; All rights reserved. | Website made by MinhSon</span>
+            </div>
         </div>
     )
 }

@@ -8,3 +8,7 @@
     cursor: pointer;
     position: absolute;
 }
+.footer{
+    margin: 0 10px 10px 10px;
+    padding-top: 600px;
+}
